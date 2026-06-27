@@ -191,7 +191,7 @@ if(MSVC)
     add_compile_options(/utf-8)
 endif()
 
-add_executable(ImGuiProject
+add_executable(ImGuiProject WIN32
     main.cpp
     ${IMGUI_SOURCES}
     ${GUI_SOURCES}
