@@ -17,6 +17,7 @@ namespace Gui {
 	extern std::mutex logsMutex;
 
 	void mainLoop();
+	bool hasOpenWindows();
 	std::vector<std::pair<std::string, int>> getLogsSnapshot();
 
 	inline void log(const char* fmt, ...) {

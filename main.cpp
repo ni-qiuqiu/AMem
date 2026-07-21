@@ -36,7 +36,7 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     return ::DefWindowProcW(hWnd, msg, wParam, lParam);
 }
 
-int main(int, char**)
+int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
     ExceptionHandler::Initialize("AndroidModEngine", ".\\CrashDumps\\",
         [](const ExceptionHandler::ExceptionInfo& info) {
@@ -48,7 +48,7 @@ int main(int, char**)
 
     WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"ImGui Example", nullptr };
     ::RegisterClassExW(&wc);
-    HWND hwnd = ::CreateWindowW(wc.lpszClassName, L"Dear ImGui DirectX12 Example", WS_OVERLAPPEDWINDOW, 100, 100, (int)(1280 * main_scale), (int)(800 * main_scale), nullptr, nullptr, wc.hInstance, nullptr);
+    HWND hwnd = ::CreateWindowExW(WS_EX_TOOLWINDOW, wc.lpszClassName, L"AMem Host", WS_OVERLAPPEDWINDOW, 100, 100, (int)(1280 * main_scale), (int)(800 * main_scale), nullptr, nullptr, wc.hInstance, nullptr);
 
     if (!g_renderer.init(hwnd))
     {
@@ -57,8 +57,6 @@ int main(int, char**)
         return 1;
     }
 
-    ::ShowWindow(hwnd, SW_SHOWDEFAULT);
-    ::UpdateWindow(hwnd);
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -112,6 +110,8 @@ int main(int, char**)
         ImGui::NewFrame();
 
         Gui::mainLoop();
+        if (!Gui::hasOpenWindows())
+            ::PostQuitMessage(0);
 
         g_renderer.endFrame();
     }

@@ -37,6 +37,15 @@ namespace Gui {
 		windows.emplace_back(window);
 	}
 
+	bool hasOpenWindows()
+	{
+		for (const auto& window : windows) {
+			if (window && window->pOpen)
+				return true;
+		}
+		return false;
+	}
+
 	void mainLoop()
 	{
 		static bool bootstrapped = false;
